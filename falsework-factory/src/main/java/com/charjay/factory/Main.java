@@ -25,7 +25,7 @@ public class Main {
         proj.setDatabaseName( "mysql" );// project要用的数据库类型。mysql,oracle
         proj.setPortalKey( "test" );// 门户标识
         proj.setPortalCnName( "管理后台" );// 门户名称
-        proj.setSeqIdPrefix( "1000" ); //初始数据的ID前缀,这个一定要填写，请查询系统管理portal表，设置前缀值，比如1600
+        proj.setSeqIdPrefix( "1000" ); //初始数据的ID前缀
         proj.setStaticPathName( "test" );
 
         /******* 输入输出路径配置 ********/
