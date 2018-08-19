@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>授权</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css"  media="all">
+  <style type="text/css">
+    .layui-form-item .layui-inline{
+      margin-top: 10px;
+    }
+    .layui-tree .selected{color:#5FB878;}
+    .layui-tree a:hover{color: #5FB878;}
+  </style>
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <ul id="demo"></ul>
+      </div>
+    </div>
+  </div>
+
+    
+  <script src="../../layuiadmin/layui/layui.js" ></script>  
+  <script>
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    app: 'lib/app' //主入口模块
+  }).use(['app', 'form', 'laydate','tree'], function(){
+    var $ = layui.$
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,app = layui.app
+    ,setter = layui.setter
+    ,form = layui.form;
+    
+    var global={
+      seqId:app.param.seqId,
+    }
+
+    start();
+
+    function start(){
+      getAuthoTree();
+    }
+
+    function getAuthoTree(){
+      app.ajax({
+        url: app.getUrl('getAuthoTree'), //实际使用请改成服务端真实接口
+        data:{'roleId': global.seqId},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+          tree(data);
+        }
+      });
+    }
+
+    function grantAutho(authoId,isGrant){
+      app.ajax({
+        url: app.getUrl('grantAutho'), //实际使用请改成服务端真实接口
+        data:{'roleId': global.seqId, 'authoId': authoId, 'isGrant': isGrant},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+          layer.msg('修改成功');
+        }
+      });
+    }
+
+    function tree(nodes){
+      layui.tree({
+        elem: '#demo' //传入元素选择器
+        ,click: function(node){
+          // console.log(node) //node即为当前点击的节点数据
+          var obj=$('#'+node.id);
+          if(obj.hasClass('selected')){
+            $('#'+node.id).removeClass('selected');
+            grantAutho(node.id,0);
+          }else{
+            $('#'+node.id).addClass('selected');
+            grantAutho(node.id,1);
+          }
+        }  
+        ,nodes:nodes
+      });
+    }
+
+
+
+  });
+  </script>
+</body>
+</html>

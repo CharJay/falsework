@@ -1,0 +1,41 @@
+root
+  |
+  |----project
+  |			|
+  |			|----name ${project.name}
+  |			|----basepackage ${project.basepackage}
+  |			|----groupId ${project.groupId}
+  |			|----databaseName ${project.databaseName}
+  |
+  |----entity
+  			|
+  			|----name ${entity.name}
+  			|----comment ${entity.comment}
+  			|
+  			|----tableName ${entity.tableName}
+  			|----table
+  			|		|
+  			|		|----sqlName ${entity.table.sqlName}
+  			|		|----comment ${entity.table.comment}
+  			|		|----pkColName ${entity.table.pkColName}
+  			|		|----columnsMap <#assign columnMap = entity.table.columnsMap> <#list columnMap?keys as column>
+  			|					|
+  			|					|----sqlName ${columnMap[column].sqlName}
+  			|					|----tableName ${columnMap[column].tableName}
+  			|					|----comment ${columnMap[column].comment!"如果是null，采用默认值"}
+  			|					|----...
+  			|					</#list>
+  			|
+  			|
+  			|----properties <#assign propertyMap = entity.properties>  <#list propertyMap?keys as property>
+  						|
+  						|----name ${propertyMap[property].name}
+  						|----javaType ${propertyMap[property].javaType}
+  						|----comment ${propertyMap[property].comment!""}
+  						|----identity ${propertyMap[property].identity}
+  						|----columnName ${propertyMap[property].columnName}
+  						|----column ${propertyMap[property].column}
+  								|----sqlName ${propertyMap[property].column.sqlName}
+  								|...
+  						</#list>
+

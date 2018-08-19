@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>授权</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css"  media="all">
+  <style type="text/css">
+    .layui-form-item .layui-inline{
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form id="form" class="layui-form" action="" lay-filter="component-form-group">
+          <div class="layui-form-item">
+		    <label class="layui-form-label">角色</label>
+		    <div class="layui-input-block" id="roleList">
+			</div>
+		  </div>
+
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    
+  <script src="../../layuiadmin/layui/layui.js" ></script>  
+  <script>
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    app: 'lib/app' //主入口模块
+  }).use(['app', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,app = layui.app
+    ,setter = layui.setter
+    ,form = layui.form;
+    
+    var global={
+      tableName:'sysAdmin',
+      seqId:app.param.seqId,
+    }
+
+    start();
+
+    function start(){
+      getRoleList();
+      addEvent();
+    }
+
+    function addEvent(){
+    	form.on('checkbox(role-list)', function(data){
+			console.log(data.elem); //得到checkbox原始DOM对象
+			var roleId = $(data.elem).attr('name');
+			
+			console.log(data.elem.checked); //是否被选中，true或者false
+			console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+			console.log(data.othis); //得到美化后的DOM对象
+			
+			app.ajax({
+		        url: app.getUrl('grantRole'), //实际使用请改成服务端真实接口
+		        data:{'userId': global.seqId, 'roleId': roleId, 'isGrant': data.elem.checked?1:0},
+		        type: "post",
+		        dataType: "json",
+		        success: function(data){
+		        }
+		    });
+  		});
+    }
+
+    function getRoleList(){
+
+      app.ajax({
+        url: app.getUrl('getRoleList'), //实际使用请改成服务端真实接口
+        data:{'userId': global.seqId},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+        	$('#roleList').empty();
+			$.each(data, function(i, o) {
+			 	$('#roleList').append('<input type="checkbox" name="'+o.roleId+'" title="'+o.name+'" lay-filter="role-list" '+(o.isGrant==1?'checked=""':'')+'>')
+			});
+			
+			form.render(null, 'component-form-group');
+        }
+      });
+      
+    }
+    
+
+  });
+  </script>
+</body>
+</html>

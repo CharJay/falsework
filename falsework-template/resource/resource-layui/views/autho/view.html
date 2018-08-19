@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>编辑</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css"  media="all">
+  <style type="text/css">
+    .layui-form-item .layui-inline{
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form id="form" class="layui-form" action="" lay-filter="component-form-group">
+          
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">用户名</label>
+              <div class="layui-input-inline">
+                <input type="text" data-tagname="input" name="username" lay-verify="username" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+              </div>
+            </div>            
+            <div class="layui-inline">
+              <label class="layui-form-label">手机号</label>
+              <div class="layui-input-inline">
+                <input type="tel" data-tagname="input" name="mobilePhone" lay-verify="phone" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">验证邮箱</label>
+              <div class="layui-input-inline">
+                <input type="text" data-tagname="input" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">日期</label>
+              <div class="layui-input-inline">
+                <input type="text" data-tagname="datetime" name="createTime" id="createTime" lay-verify="datetime"  autocomplete="off" class="layui-input date">
+              </div>
+            </div>
+
+            <div class="layui-inline">
+              <label class="layui-form-label">性别</label>
+              <div class="layui-input-inline">
+                <select name="sex" id="sex" data-tagname="select" lay-filter="aihao">
+                  <option value=""></option>
+                  <option value="0">未知</option>
+                  <option value="1">男</option>
+                  <option value="2" >女</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+                <!-- <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button> -->
+                <!-- <button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    
+  <script src="../../layuiadmin/layui/layui.js" ></script>  
+  <script>
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    app: 'lib/app' //主入口模块
+  }).use(['app', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,app = layui.app
+    ,setter = layui.setter
+    ,form = layui.form;
+    
+    var global={
+      tableName:'sysAutho',
+      seqId:app.param.seqId,
+    }
+
+    start();
+
+    function start(){
+      readById();
+      addEvent();
+    }
+
+    function addEvent(){
+      
+    }
+
+    function readById(){
+
+      app.ajax({
+        url: app.getUrl('readById',[global.tableName]), //实际使用请改成服务端真实接口
+        data:{'seqId':global.seqId},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+          $.each(data, function(key, value) {
+
+            var tag=$('#form [name="'+key+'"]');
+            var tagname=tag.data('tagname');
+            if(tagname){
+              if(tagname.indexOf('date')>=0){
+                  laydate.render({
+                    elem: '#'+key,
+                    value: value,
+                    type: tagname,
+                    isInitValue: true //允许填充初始值
+                  });
+              }else if(tagname=='select'){
+                tag.val(value);
+              }else{
+                tag.val(value);
+              }
+
+              $(tag).attr('disabled','disabled');
+            }
+
+            //初始化数据后再渲染
+            form.render(null, 'component-form-group');
+
+          });
+        }
+      });
+      
+    }
+    
+
+  });
+  </script>
+</body>
+</html>

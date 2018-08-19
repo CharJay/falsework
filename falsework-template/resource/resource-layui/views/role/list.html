@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>列表</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css"  media="all">
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            
+            <form id="select-form" class="layui-form" lay-filter="component-form-group">
+              <!--新增-->
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <div class="layui-btn-group table-operate-btn">
+                    <button autho="sysRole_create" class="autho layui-hide layui-btn" type="button" data-type="create"><i class="layui-icon">&#xe608;</i>新建</button>
+                  </div> 
+                </div>
+                <!--条件查询-->
+                <div class="layui-inline">
+                  <div class="layui-input-inline">
+                    <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="角色名">
+                  </div>
+                </div>
+
+                <!--搜索-->
+                <div class="layui-inline">
+                  <div class="layui-btn-group table-operate-btn">
+                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="component-form-submit"><i class="layui-icon">&#xe615;</i>搜索</button>
+                  </div> 
+                </div>
+              </div>
+            </form>
+
+            <!--数据表格 -->
+            <table class="layui-hide" id="table-operate" lay-filter="table-operate"></table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../../layuiadmin/layui/layui.js" ></script>  
+  <script>
+
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    app: 'lib/app' 
+  }).use([ 'table','laydate','app'], function(){
+    var table = layui.table
+    ,laydate = layui.laydate
+    ,$ = layui.$
+    ,app = layui.app
+    ,setter = layui.setter
+    ,form = layui.form
+    ,dataTable;//引入了app，那么默认引入了setter，因为app里面引入了setter
+    
+    var global={
+      tableName:'sysRole',
+    }
+    start();
+
+
+    function start(){
+      initData();
+      addEvent();
+    }
+
+    function addEvent(){
+       
+
+      //日期
+      lay('.date').each(function(){
+        laydate.render({
+          elem: this
+          ,trigger: 'click'
+          ,type:'date'
+          ,format:'yyyy-MM-dd'
+          ,theme: 'molv'
+        });
+      });
+
+      //监听工具条
+      table.on('tool(table-operate)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'detail'){
+          //查看
+          layer.open({
+            type: 2,
+            title: '查看',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['40%', '50%'],
+            content: './view.html?seqId='+data.seqId //iframe的url
+          }); 
+        } else if(obj.event === 'del'){
+          //刪除
+          top.layer.confirm('真的删除么？', function(index){
+            obj.del();
+            deleteById(data.seqId);
+            top.layer.close(index);
+          });
+        } else if(obj.event === 'edit'){
+          //编辑
+          layer.open({
+            type: 2,
+            title: '编辑',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['40%', '50%'],
+            content: './edit.html?seqId='+data.seqId //iframe的url
+          }); 
+        } else if(obj.event === 'grant'){
+          //编辑
+          layer.open({
+            type: 2,
+            title: '授权',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['30%', '80%'],
+            content: './grant.html?seqId='+data.seqId //iframe的url
+          }); 
+        }
+      });
+
+      //自定义事件监听
+      var activeEvent = {
+        getCheckData: function(){ //获取选中数据
+          var checkStatus = table.checkStatus('table-operate')
+          ,data = checkStatus.data;
+          layer.alert(JSON.stringify(data));
+        }
+        ,create: function(){ //新建
+          layer.open({
+            type: 2,
+            title: '新建',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['40%', '50%'],
+            content: './add.html' //iframe的url
+          }); 
+        }
+      };
+      
+      $('.table-operate-btn .layui-btn').on('click', function(){
+        var type = $(this).data('type');
+        activeEvent[type] ? activeEvent[type].call(this) : '';
+      });
+
+      //表格监听
+      form.render(null, 'component-form-group');
+      form.on('submit(component-form-submit)', function(data){
+        var param={};
+        $.each(data.field,function(index,value){
+          if(value){//过滤空值
+            param[index]=value;
+          }
+        })
+        dataTable.reload({
+          page: {
+            curr: 0 //重新从第 1 页开始
+          },
+          where: param
+        });
+        return false;
+      });
+    }
+
+    function initData(){
+      dataTable=table.render({
+        elem: '#table-operate'
+        ,url: app.getUrl('readAndCount',[global.tableName])
+        ,cellMinWidth: 80
+        ,method: 'post'
+        ,height: 'full-110'
+        ,request: setter.request
+        ,response: setter.response
+        ,page: true
+        ,limit: 10
+        ,where: {
+          //...
+        }
+        ,cols: [[
+          // {type:'checkbox', fixed: 'left'},
+          {field:'seqId', title: 'ID', fixed: 'left'}
+          ,{field:'name', title: '角色名'}
+          ,{field:'enName', title: '角色码'}
+          ,{field:'createTime', title: '创建时间'}
+          ,{title: '操作', align:'center', fixed: 'right', toolbar: '#table-operate-bar'}
+        ]]
+        ,done:function(){
+          app.initButton(app.param.mid);
+        }
+      });
+      
+    }
+
+    function deleteById(seqId){
+      app.ajax({
+        url: app.getUrl('deleteById',[global.tableName]), //实际使用请改成服务端真实接口
+        data:{'seqId':seqId},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+          
+        }
+      });
+    }
+
+    window.reloadTable=function(){
+      dataTable.reload();
+    }
+    
+  });
+  </script>
+
+  <!-- 模板 -->
+  <script type="text/html" id="table-operate-bar">
+    <!-- <a autho="sysAdmin_updateById" class="autho layui-hide layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
+    <a autho="sysRole_updateById" class="autho layui-hide layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a autho="sysRole_deleteById" class="autho layui-hide layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a autho="sysRole_grantAutho" class="autho layui-hide layui-btn layui-btn-warm layui-btn-xs" lay-event="grant">授予权限</a>
+  </script>
+
+  <!-- 数据字典 -->
+
+
+
+</body>
+</html>

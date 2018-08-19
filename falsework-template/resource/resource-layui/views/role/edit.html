@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>编辑</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css"  media="all">
+  <style type="text/css">
+    .layui-form-item .layui-inline{
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form id="form" class="layui-form" action="" lay-filter="component-form-group">
+          
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">角色名</label>
+              <div class="layui-input-inline">
+                <input type="text" data-tagname="input" name="name" lay-verify="require" autocomplete="off" placeholder="请输入角色名" class="layui-input">
+              </div>
+            </div>            
+            <div class="layui-inline">
+              <label class="layui-form-label">角色码</label>
+              <div class="layui-input-inline">
+                <input type="text" data-tagname="input" name="enName" lay-verify="require" autocomplete="off" placeholder="请输入角色码" class="layui-input">
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+                <button class="layui-btn" lay-submit="" lay-filter="component-form-submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    
+  <script src="../../layuiadmin/layui/layui.js" ></script>  
+  <script>
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    app: 'lib/app' //主入口模块
+  }).use(['app', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,app = layui.app
+    ,setter = layui.setter
+    ,form = layui.form;
+    
+    var global={
+      tableName:'sysRole',
+      seqId:app.param.seqId,
+    }
+
+    start();
+
+    function start(){
+      readById();
+      addEvent();
+    }
+
+    function addEvent(){
+      /* 自定义验证规则 */
+      form.verify({
+
+      });
+      
+      /* 监听提交 */
+      form.on('submit(component-form-submit)', function(data){
+        update(data.field);
+        return false;
+      });
+    }
+
+    function readById(){
+
+      app.ajax({
+        url: app.getUrl('readById',[global.tableName]), //实际使用请改成服务端真实接口
+        data:{'seqId':global.seqId},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+          $.each(data, function(key, value) {
+
+            var tag=$('#form [name="'+key+'"]');
+            var tagname=tag.data('tagname');
+            if(tagname){
+              if(tagname.indexOf('date')>=0){
+                  laydate.render({
+                    elem: '#'+key,
+                    value: value,
+                    type: tagname,
+                    isInitValue: true //允许填充初始值
+                  });
+              }else if(tagname=='select'){
+                tag.val(value);
+              }else{
+                tag.val(value);
+              }
+            }
+
+            //初始化数据后再渲染
+            form.render(null, 'component-form-group');
+
+          });
+        }
+      });
+      
+    }
+
+    function update(_param){
+      var param=_param||{};
+      param.seqId=global.seqId;
+      app.ajax({
+        url: app.getUrl('updateById',[global.tableName]), //实际使用请改成服务端真实接口
+        data:param,
+        type: "post",
+        dataType: "json",
+        success: function(data){
+          var index = parent.layer.getFrameIndex(window.name);
+          parent.layer.close(index);
+          parent.layer.msg('成功');
+          parent.reloadTable();
+        }
+      });
+    }
+
+    
+
+  });
+  </script>
+</body>
+</html>

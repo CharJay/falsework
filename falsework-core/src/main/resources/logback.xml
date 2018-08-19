@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300000">
+	<property name="LOG_HOME" value="/usr/webser/logs/flasework" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%level [%thread] %logger.%M %L - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="NORMAL_FILE_ROLLING"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+          <level>ERROR</level>
+          <onMatch>DENY</onMatch>
+          <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+		<file>${LOG_HOME}/log.txt</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${LOG_HOME}/%d{yyyy.MM,aux}/log.%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{MM-dd HH:mm:ss.SSS} %level [%thread] %logger.%M %L - %msg%n
+			</pattern>
+		</encoder>
+
+	</appender>
+
+	<appender name="WARN_FILE_ROLLING"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+          <level>WARN</level>
+        </filter>
+		<file>${LOG_HOME}/exlog.txt</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${LOG_HOME}/%d{yyyy.MM,aux}/exlog.%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>50MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{MM-dd HH:mm:ss.SSS} %level [%thread] %logger.%M %L - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="NORMAL_FILE_ROLLING" />
+		<appender-ref ref="WARN_FILE_ROLLING" />
+	</root>
+
+</configuration>

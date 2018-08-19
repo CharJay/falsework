@@ -1,0 +1,17 @@
+<#assign basepackage = project.basepackage>
+<#assign className = entity.name>
+<#assign classNameLower = className?uncap_first>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="1">
+	 	<tr th:each="obj : ${r'$'}{list}" >
+	        <td th:text="${r'$'}{obj.name}">name</td>
+	    </tr>
+	</table>
+</body>
+</html>

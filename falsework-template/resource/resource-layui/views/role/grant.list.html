@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>授权</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="../../layuiadmin/style/admin.css"  media="all">
+  <style type="text/css">
+    .layui-form-item .layui-inline{
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form id="form" class="layui-form" action="" lay-filter="component-form-group">
+          <div class="layui-form-item">
+		    <label class="layui-form-label">权限</label>
+		    <div class="layui-input-block" id="authoList">
+		    	<fieldset class="layui-elem-field layui-field-title">
+				  <legend>模块</legend>
+				</fieldset>
+				<div id="mk"></div>
+		    	<fieldset class="layui-elem-field layui-field-title">
+				  <legend>菜单</legend>
+				</fieldset>
+				<div id="cd"></div>
+		    	<fieldset class="layui-elem-field layui-field-title">
+				  <legend>按钮</legend>
+				</fieldset>
+				<div id="an"></div>
+				
+			</div>
+		  </div>
+
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    
+  <script src="../../layuiadmin/layui/layui.js" ></script>  
+  <script>
+  layui.config({
+    base: '../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    app: 'lib/app' //主入口模块
+  }).use(['app', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,app = layui.app
+    ,setter = layui.setter
+    ,form = layui.form;
+    
+    var global={
+      tableName:'sysAdmin',
+      seqId:app.param.seqId,
+    }
+
+    start();
+
+    function start(){
+      getRoleList();
+      addEvent();
+    }
+
+    function addEvent(){
+    	form.on('checkbox(autho-list)', function(data){
+			var authoId = $(data.elem).attr('name');
+			
+			app.ajax({
+		        url: app.getUrl('grantAutho'), //实际使用请改成服务端真实接口
+		        data:{'roleId': global.seqId, 'authoId': authoId, 'isGrant': data.elem.checked?1:0},
+		        type: "post",
+		        dataType: "json",
+		        success: function(data){
+		        }
+		    });
+  		});
+    }
+
+    function getRoleList(){
+
+      app.ajax({
+        url: app.getUrl('getAuthoList'), //实际使用请改成服务端真实接口
+        data:{'roleId': global.seqId},
+        type: "post",
+        dataType: "json",
+        success: function(data){
+        	$('#mk').empty();
+        	$('#cd').empty();
+        	$('#an').empty();
+			$.each(data, function(i, o) {
+				var me; 
+				if(o.type == 1) {
+					me = $('#mk');
+				} else if(o.type == 2) {
+					me = $('#cd');
+				} else {
+					me = $('#an');
+					
+				}
+				me.append('<input type="checkbox" name="'+o.authoId+'" title="'+o.name+'" lay-filter="autho-list" '+(o.isGrant==1?'checked=""':'')+'>')
+			});
+			
+			form.render(null, 'component-form-group');
+        }
+      });
+      
+    }
+    
+
+  });
+  </script>
+</body>
+</html>
