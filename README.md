@@ -6,8 +6,13 @@
 3. 每个人都可以定制化自己的模块文件，然后快速生成脚手架
 4. 架构师必备的脚手架工具，通过从数据库读取表，然后生成从数据库脚本、后端、前端、运维的一整套CRUD流程
 
+#### 项目结构
+1. falsework-core 脚手架核心程序
+2. falsework-factory 脚手架工厂
+3. falsework-template 脚手架模板
+
 #### 软件架构
-freemarker
+freemarker,spring
 
 #### 使用说明
 1. 配置
@@ -35,5 +40,5 @@ proj.setStaticPathName( "test" );
 String templateRoot = "I:\\git\\self\\falsework\\falsework-template\\template"; //修改为你自己的本地模板路径
 String outputRoot = "I:\\git\\self\\autocode";
 ```
-2. 运行factory的main
+2. 运行falsework-factory的main
 
