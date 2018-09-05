@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="300000">
-	<property name="LOG_HOME" value="/Users/davin/temp/webser/logs/flasework" />
+	<property name="LOG_HOME" value="/usr/webser/logs/flasework" />
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>
