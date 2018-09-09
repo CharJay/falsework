@@ -1,8 +1,9 @@
+<#assign basepackage = project.basepackage>
 package com.test.ctrl;
 
-import com.test.BaseTest;
-import com.xm.stbest.App;
-import com.xm.stbest.common.agent.SysServiceAgent;
+import com.test.ctrl.BaseTest;
+import ${basepackage}.App;
+import ${basepackage}.common.agent.SysServiceAgent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

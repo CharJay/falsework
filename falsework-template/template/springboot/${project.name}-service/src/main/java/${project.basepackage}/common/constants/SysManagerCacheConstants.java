@@ -10,7 +10,7 @@
 </#list>
 package ${basepackage}.common.constants;
 
-import com.xm.core.utils.constants.CoreCacheConstants;
+import com.framework.core.constants.CoreCacheConstants;
 
 public class SysManagerCacheConstants extends CoreCacheConstants {
     

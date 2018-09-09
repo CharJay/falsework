@@ -82,6 +82,7 @@
   </div>
 
   <script src="../layuiadmin/layui/layui.js"></script>  
+  <script src="../layuiadmin/lib/sha1.js"></script>
   <script>
   layui.config({
     base: '../layuiadmin/' //静态资源所在路径
@@ -97,7 +98,7 @@
     
     //提交
     form.on('submit(LAY-user-login-submit)', function(obj){
-      
+        obj.field.password = hex_sha1(obj.field.password);
       app.ajax({
         url: app.getUrl('login'), //实际使用请改成服务端真实接口
         data:obj.field,

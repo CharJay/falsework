@@ -34,3 +34,6 @@ target/
 # system ignore
 .DS_Store
 Thumbs.db
+
+#test
+falsework-factory/src/main/java/com/charjay/test

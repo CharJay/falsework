@@ -25,14 +25,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import com.xm.core.utils.config.datasource.dynamic.DynamicDataSourceRegister;
+import com.framework.core.db.dynamic.DynamicDataSourceRegister;
 
 /**
  * 启动程序
  */
 @SpringBootApplication
-@Import({DynamicDataSourceRegister.class})//注册动态多数据源
-@ComponentScan(basePackages={"${basepackage}", "com.xm.core"})
+//@Import({DynamicDataSourceRegister.class})//注册动态多数据源
+@ComponentScan(basePackages={"${basepackage}", "com.framework.core"})
 public class App {
     //u-insert#other1#
 

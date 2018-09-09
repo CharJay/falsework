@@ -1,4 +1,4 @@
-package com.ctrl.test;
+package com.test.ctrl;
 
 
 import org.junit.Assert;

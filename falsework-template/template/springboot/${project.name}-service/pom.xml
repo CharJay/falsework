@@ -6,7 +6,6 @@
 	<groupId>${project.groupId}</groupId>
 	<artifactId>${project.name}-service</artifactId>
 	<version>${r'$'}{${project.name}.version}</version>
-	
 	<packaging>jar</packaging>
 	
 	<properties>
@@ -14,17 +13,17 @@
 	</properties>
 	
 	<parent>
-		<groupId>com.xm.core</groupId>
-		<artifactId>xmcore-utils-parent</artifactId>
+		<groupId>com.framework.core</groupId>
+		<artifactId>framework-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	
 	<dependencies>
 		
   		<dependency>
-			<groupId>com.xm.core</groupId>
-			<artifactId>xmcore-utils</artifactId>
-			<version>${r'$'}{xmcore.version}</version>
+			<groupId>com.framework.core</groupId>
+			<artifactId>framework-core</artifactId>
+			<version>${r'$'}{framework.version}</version>
 		</dependency>
 		<!-- u-insert#other1# -->
 		<!-- u-insert# -->

@@ -16,8 +16,7 @@ package ${basepackage}.common.agent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.xm.core.utils.agent.CoreServiceAgent;
+import com.framework.core.db.agent.CoreServiceAgent;
 import ${basepackage}.service.*;
 
 @Component

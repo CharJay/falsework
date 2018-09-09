@@ -2,6 +2,6 @@
 echo "!!!! Start deploy "
 
 
-cd ./deploy/
+cd ./dev/
 
 ./uploadstatic.sh

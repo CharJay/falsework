@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "!!!! Start shell "
 
-cd ./deploy/
+cd ./dev/
 
 ./uploadconf.sh
 ./mvckillsimple.sh

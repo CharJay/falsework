@@ -6,16 +6,15 @@
 	<groupId>${project.groupId}</groupId>
 	<artifactId>${project.name}-mvc</artifactId>
 	<version>${r'$'}{${project.name}.version}</version>
-	
 	<packaging>jar</packaging>
 	
 	<properties>
 		<${project.name}.version>1.0.0-SNAPSHOT</${project.name}.version>
 	</properties>
-	
+
 	<parent>
-		<groupId>com.xm.core</groupId>
-		<artifactId>xmcore-parent</artifactId>
+		<groupId>com.framework.core</groupId>
+		<artifactId>framework-thin</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	
@@ -28,19 +27,9 @@
 		</dependency>
 
   		<dependency>
-			<groupId>com.xm.core</groupId>
-			<artifactId>xmcore-utils</artifactId>
-			<version>${r'$'}{xmcore.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger2</artifactId>
-		    <version>2.6.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-		    <version>2.6.1</version>
+			<groupId>com.framework.core</groupId>
+			<artifactId>framework-core</artifactId>
+			<version>${r'$'}{framework.version}</version>
 		</dependency>
 		<!-- u-insert#other1# -->
 		<!-- u-insert# -->

@@ -15,20 +15,10 @@
 package ${basepackage}.common.agent;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Component;
-
-import com.xm.core.utils.agent.CoreDaoAgent;
-import ${basepackage}.dao.*;
+import com.framework.core.db.agent.CoreDaoAgent;
 
 @Component
 public class SysDaoAgent extends CoreDaoAgent {
-    
-    <#assign entities=project.entities >
-    <#list entities as enti>
-    @Resource
-    public ${enti.name}Dao ${enti.name?uncap_first}Dao;
-    </#list>
-    //u-insert#other1#
-    //u-insert#
+
 }

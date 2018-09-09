@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.xm.core.utils.bean.ListDataWrap;
-import com.xm.core.utils.bean.Page;
+import com.framework.core.db.bean.ListDataWrap;
+import com.framework.core.db.bean.Page;
 import ${basepackage}.common.agent.SysDaoAgent;
 import ${basepackage}.pojo.${className}Pojo;
 

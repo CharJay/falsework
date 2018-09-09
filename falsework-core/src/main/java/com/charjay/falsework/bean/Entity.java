@@ -1,6 +1,7 @@
 package com.charjay.falsework.bean;
 
 import com.charjay.falsework.util.CustomStringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -190,8 +191,13 @@ public class Entity {
         }
         return list;
     }
-    
-    //
+
+    public String getNameFirstLower() {
+        if (name == null && tableName != null) {
+            name = CustomStringUtils.camelCase4Class( tableName );
+        }
+        return (new StringBuilder()).append(Character.toLowerCase(name.charAt(0))).append(name.substring(1)).toString();
+    }
     /**
      * 未设定时默认取对应表名的驼峰式
      *

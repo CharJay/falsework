@@ -1,4 +1,4 @@
-package com.service.test;
+package com.test.service;
 
 import java.util.Date;
 

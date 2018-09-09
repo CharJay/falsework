@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xm.core.utils.bean.ListDataWrap;
-import com.xm.core.utils.bean.Page;
-import com.xm.core.utils.bean.RetMsg;
-import com.xm.core.utils.helper.BusinessException;
+import com.framework.core.db.bean.ListDataWrap;
+import com.framework.core.db.bean.Page;
+import com.framework.core.db.bean.RetMsg;
+import com.framework.core.exception.BusinessException;
 
 import ${basepackage}.common.agent.SysServiceAgent;
 import ${basepackage}.param.*;

@@ -68,6 +68,7 @@
 	<logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR" />
 
 	<springProfile name="default,dev">
+		<logger name="com.framework" level="DEBUG" />
 		<logger name="com.xm" level="DEBUG" />
 		<root level="DEBUG">
 			<appender-ref ref="CONSOLE" />
@@ -77,10 +78,13 @@
 	
 	<springProfile name="pro">
 		<logger name="com.xm" level="DEBUG" />
+		<logger name="com.framework" level="DEBUG" />
 		<logger name="org.apache.http.headers" level="DEBUG" additivity="false" >
 			<appender-ref ref="HTTP_LOG" />
 		</logger>
 		<logger name="org.hibernate.SQL" level="INFO" />
+		<!--druid.sql的log太详细-->
+		<!--<logger name="druid.sql" level="DEBUG" />-->
 		<root level="INFO">
 			<appender-ref ref="ROLLING_FILE" />
 			<appender-ref ref="SERIOUS_FILE" />

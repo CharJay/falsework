@@ -2,7 +2,7 @@
 echo "!!!! Start deploy "
 
 
-cd ./deploy/
+cd ./dev/
 #./ready-deploy.sh
 
 ./uploadwar.sh
