@@ -41,7 +41,7 @@ public class Main {
         t.pullTables( new ArrayList<String>(), Arrays.asList( "t_%" ), null );// 从数据库pull表模型(表名模糊匹配pull，额外要pull的表，要排除的表)
 
         /******* 定义输出路径 *********/
-        String outputPath = outputRoot + File.separator + proj.getName()+File.separator+"server-code";// 约定以项目名作为开始目录。自定义根目录+项目名
+        String outputPath = outputRoot + File.separator + proj.getName()+File.separator+proj.getName()+"-parent";// 约定以项目名作为开始目录。自定义根目录+项目名
         t.exe( outputPath );// 生成基于数据库表的模板
         System.out.println( "OK，输出路径："+outputPath );
     

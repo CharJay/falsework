@@ -18,12 +18,13 @@ freemarker,spring
 1. 配置
 
 ```java
+CustomConfig.load("conf.properties");
 /******* DB配置 ******/
 JdbcParam jdbcParam = new JdbcParam();                           
-jdbcParam.setUrl( "jdbc:mysql://127.0.0.1:3306/kf_db?useUnicode=true&characterEncoding=utf8" );
-jdbcParam.setDriver( "com.mysql.jdbc.Driver" );
-jdbcParam.setUsername( "root" );
-jdbcParam.setPassword( "root" );
+jdbcParam.setUrl( CustomConfig.getString("jdbc.url") );
+jdbcParam.setDriver( CustomConfig.getString("jdbc.driver") );
+jdbcParam.setUsername( CustomConfig.getString("jdbc.username") );
+jdbcParam.setPassword( CustomConfig.getString("jdbc.password") );
 
 /******* Project配置 ******/
 Project proj = new Project();
@@ -37,8 +38,18 @@ proj.setSeqIdPrefix( "1000" ); //初始数据的ID前缀
 proj.setStaticPathName( "test" );
 
 /******* 输入输出路径配置 ********/
-String templateRoot = "I:\\git\\self\\falsework\\falsework-template\\template"; //修改为你自己的本地模板路径
-String outputRoot = "I:\\git\\self\\autocode";
+String templateRoot = CustomConfig.getString("template.input"); //修改为你自己的本地模板路径
+String outputRoot = CustomConfig.getString("template.output");
+/******* FalseWork ********/
+String templateDir = templateRoot + File.separator + "springboot";
+FalseWork t = new FalseWork( proj, jdbcParam, templateDir );
+/****** 选择model获取方式 ********/
+t.pullTables( new ArrayList<String>(), Arrays.asList( "t_%" ), null );// 从数据库pull表模型(表名模糊匹配pull，额外要pull的表，要排除的表)
+
+/******* 定义输出路径 *********/
+String outputPath = outputRoot + File.separator + proj.getName()+File.separator+proj.getName()+"-parent";// 约定以项目名作为开始目录。自定义根目录+项目名
+t.exe( outputPath );// 生成基于数据库表的模板
+System.out.println( "OK，输出路径："+outputPath );
 ```
 2. 运行falsework-factory的main
 
